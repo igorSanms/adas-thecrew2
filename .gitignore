@@ -1,0 +1,20 @@
+# Ambientes virtuais
+venv/
+env/
+
+# Arquivos compilados do Python
+__pycache__/
+*.py[cod]
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
+
+# Configurações do VS Code (opcional, mas recomendado)
+.vscode/
+
+# Imagens e vídeos de teste (não queremos encher o github com isso)
+tests/media/
+*.mp4
+*.png
+*.jpg
