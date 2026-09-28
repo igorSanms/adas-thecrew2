@@ -10,10 +10,10 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Configurações do VS Code (opcional, mas recomendado)
+# Configurações do VS Code
 .vscode/
 
-# Imagens e vídeos de teste (não queremos encher o github com isso)
+# Imagens e vídeos de teste
 tests/media/
 *.mp4
 *.png
