@@ -1,11 +1,10 @@
 import cv2
 import time
 from captura.tela import Capturador
-# Importamos a nossa nova função de percepção
 from percepcao.roi import aplicar_roi
+from percepcao.pista import detectar_faixas_bordas 
 
 def desenhar_hud(frame_display, fps, estado_sistema, estado_player):
-    # (Mantenha o código da função desenhar_hud exatamente como estava)
     fonte = cv2.FONT_HERSHEY_SIMPLEX
     cv2.rectangle(frame_display, (10, 10), (350, 130), (0, 0, 0), -1)
     textos = [
@@ -30,7 +29,11 @@ def main():
     while True:
         frame_original = capturador.capturar()
 
-        frame_processado = aplicar_roi(frame_original)
+        frame_roi = aplicar_roi(frame_original)
+        
+        mascara_pista = detectar_faixas_bordas(frame_roi)
+
+        frame_processado = cv2.cvtColor(mascara_pista, cv2.COLOR_GRAY2BGR)
         
         frame_display = cv2.resize(frame_processado, (1280, 720))
 
