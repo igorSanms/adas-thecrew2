@@ -2,15 +2,17 @@ import cv2
 import time
 from captura.tela import Capturador
 from percepcao.roi import aplicar_roi
-from percepcao.pista import detectar_faixas_bordas 
+from percepcao.pista import detectar_faixas_bordas
+from percepcao.linhas import detectar_linhas_e_centro # Importamos a nova função
 
-def desenhar_hud(frame_display, fps, estado_sistema, estado_player):
+def desenhar_hud(frame_display, fps, estado_sistema, estado_player, erro_pista):
     fonte = cv2.FONT_HERSHEY_SIMPLEX
-    cv2.rectangle(frame_display, (10, 10), (350, 130), (0, 0, 0), -1)
+    cv2.rectangle(frame_display, (10, 10), (350, 155), (0, 0, 0), -1)
     textos = [
         f"FPS: {int(fps)}",
         f"Sistema: {estado_sistema}",
         f"Player: {estado_player}",
+        f"Erro Centro: {erro_pista} px", # Nova linha exibindo o desvio numérico
         f"Alvo/Acao: AGUARDANDO..."
     ]
     y = 35
@@ -29,20 +31,28 @@ def main():
     while True:
         frame_original = capturador.capturar()
 
-        frame_roi = aplicar_roi(frame_original)
+        # 1. Extrai as bordas da tela INTEIRA primeiro (Canny + CLAHE)
+        bordas_tela_toda = detectar_faixas_bordas(frame_original)
         
-        mascara_pista = detectar_faixas_bordas(frame_roi)
-
-        frame_processado = cv2.cvtColor(mascara_pista, cv2.COLOR_GRAY2BGR)
+        # 2. Aplica a ROI em cima das bordas (agora o recorte não criará bordas falsas)
+        mascara_bordas = aplicar_roi(bordas_tela_toda)
         
-        frame_display = cv2.resize(frame_processado, (1280, 720))
+        # 3. Transformada de Hough (Calcula as linhas e o centro)
+        # Usamos frame_original aqui para desenhar as linhas coloridas sobre o asfalto real
+        frame_com_linhas, erro_pista = detectar_linhas_e_centro(mascara_bordas, frame_original)
+        
+        # 4. Prepara para exibição
+        frame_display = cv2.resize(frame_com_linhas, (1280, 720))
 
+        # 5. Calcula FPS
         tempo_atual = time.time()
         fps = 1 / (tempo_atual - ultimo_tempo) if (tempo_atual - ultimo_tempo) > 0 else 0
         ultimo_tempo = tempo_atual
 
-        desenhar_hud(frame_display, fps, estado_sistema, estado_player)
+        # 6. Desenha o HUD (agora passamos o erro_pista também)
+        desenhar_hud(frame_display, fps, estado_sistema, estado_player, erro_pista)
 
+        # 7. Exibe a janela
         cv2.imshow("Monitor ADAS - Visao Computacional", frame_display)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
