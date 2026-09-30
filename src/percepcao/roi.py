@@ -12,8 +12,6 @@ def aplicar_roi(frame):
         (largura, 820)
     ]], np.int32)
     
-    # Verifica se a imagem tem 3 canais (colorida) ou 1 canal (cinza/bordas)
-    # Se for colorida, pinta de branco com (255, 255, 255). Se for cinza, usa apenas 255.
     cor_preenchimento = (255, 255, 255) if len(frame.shape) == 3 else 255
     
     cv2.fillPoly(mascara, poligono, cor_preenchimento)
