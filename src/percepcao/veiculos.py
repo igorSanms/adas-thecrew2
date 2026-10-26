@@ -21,9 +21,8 @@ class DetectorVeiculos:
             imgsz=480, 
             verbose=False
         )
-
-        frame_com_caixas = resultados[0].plot()
         
+        frame_com_caixas = resultados[0].plot()
         dados_veiculos = resultados[0].boxes
         
         return frame_com_caixas, dados_veiculos
