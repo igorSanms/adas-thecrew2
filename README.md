@@ -5,7 +5,7 @@
 ![YOLOv8](https://img.shields.io/badge/YOLOv8-PyTorch-orange.svg)
 ![Status](https://img.shields.io/badge/Status-Estável-brightgreen.svg)
 
-*Linkedln: *
+*Linkedln: https://lnkd.in/p/e_jk5x7P*
 
 ## 📌 Visão Geral
 Este projeto é uma implementação de um sistema **ADAS (Advanced Driver Assistance System)** criado do zero em Python. Utilizando o ambiente complexo e dinâmico do jogo *The Crew 2* como simulador, o sistema captura a tela em tempo real, processa o ambiente via Visão Computacional tradicional e Redes Neurais (YOLOv8), e envia comandos físicos para o veículo através de um joystick virtual.
