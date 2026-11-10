@@ -8,10 +8,10 @@ class DetectorVeiculos:
         
         if torch.cuda.is_available():
             nome_gpu = torch.cuda.get_device_name(0)
-            print(f"-> [SUCESSO] IA rodando na GPU: {nome_gpu}")
+            print(f"-> [SUCESSO] rodando na GPU: {nome_gpu}")
             torch.backends.cudnn.benchmark = True
         else:
-            print("-> [ALERTA] IA rodando na CPU! O FPS ficara baixo.")
+            print("-> [ALERTA] rodando na CPU")
 
     def detectar(self, frame_desenho):
         resultados = self.modelo(
